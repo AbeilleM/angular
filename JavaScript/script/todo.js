@@ -5,14 +5,7 @@ class ToDo {
         this.done = done;
     }
 
-    check() {
-        // to do
-        // evenement -> marque done à true
-        // si done -> indicateur visuel que tâche faite
-
-
-        this.done = !this.done;
-    }
+    check = () => this.done = !this.done;
 
     addInList() {
         this.li = document.createElement("li");
