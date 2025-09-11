@@ -25,12 +25,36 @@ async function getData() {
     }
 
 
-
-
     // console.log(result);
   } catch (error) {
     console.error(error.message);
   }
+}
+
+async function getDataToDoList() {
+  const url = "https://jsonplaceholder.typicode.com/posts";
+  const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    
+    const currentList = document.getElementById("titleList");
+
+    const result = await response.json();
+
+    const listeToDo = Array();
+
+    for (let td of result) {
+      listeToDo.push(new ToDo(td.id, td.title, false));
+  }
+
+  for (let toDoEl of listeToDo) {
+
+    currentList.appendChild(toDoEl.addInList());
+  }
+
+  console.log(listeToDo);
 }
 
 function test() {

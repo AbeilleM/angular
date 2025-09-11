@@ -1,7 +1,7 @@
 class ToDo {
-    constructor(id, titre, done) {
+    constructor(id, title, done) {
         this.id = id;
-        this.titre = titre;
+        this.title = title;
         this.done = done;
     }
 
@@ -9,6 +9,28 @@ class ToDo {
         // to do
         // evenement -> marque done à true
         // si done -> indicateur visuel que tâche faite
+
+
+        this.done = !this.done;
+    }
+
+    addInList() {
+        this.li = document.createElement("li");
+        this.li.textContent = this.title;
+
+        this.li.addEventListener("click", () => {
+            this.check();
+            if (this.done) {
+                this.li.textContent = this.title + ' -> Fait !';
+            } else {
+                this.li.textContent = this.title
+            }
+        });
+
+        return this.li;
     }
 
 }
+
+const td = new ToDo(1, 'Test', false);
+td.check();
