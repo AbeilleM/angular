@@ -17,6 +17,12 @@ import { FormsModule } from '@angular/forms';
 
     <h1>To Do List</h1>
 
+    <input type="date"
+      [(ngModel)]="dateFilter"
+      [ngModelOptions]="{standalone: true}"
+    />
+    <button (click)="search()">Rechercher</button>
+
     <div>
     <form>
     <input 
@@ -29,15 +35,31 @@ import { FormsModule } from '@angular/forms';
     </div>
 
     @for (todo of toDoList; track todo.id) {
-    <div class="checkbox-wrapper">
-      <input 
-      type="checkbox" 
-      id="{{ todo.id }}" 
-      name="{{ todo.title }}" 
-      [attr.checked]="todo.completed ? '' : null"
-      />
-      <label for="{{ todo.title }}">{{ todo.title }}</label>
-    </div>
+      @if (filter) {
+       @if (todo.dateChecked == dateFilter) {
+      <div class="checkbox-wrapper">
+        <input 
+        type="checkbox" 
+        id="{{ todo.id }}" 
+        name="{{ todo.title }}" 
+        [attr.checked]="todo.completed ? '' : null"
+        />
+        <label for="{{ todo.title }}">{{ todo.title }}</label>
+      </div>
+      }
+      
+    } @else {
+      <div class="checkbox-wrapper">
+        <input 
+        type="checkbox" 
+        id="{{ todo.id }}" 
+        name="{{ todo.title }}" 
+        [attr.checked]="todo.completed ? '' : null"
+        />
+        <label for="{{ todo.title }}">{{ todo.title }}</label>
+      </div>
+    }
+    
     }
     
   `,    
@@ -53,17 +75,32 @@ export class App {
 
   toDoList: any[] = [];
   maxId: any;
+  filter = false;
 
   constructor(private todo: TodoService) {}
 
   ngOnInit(): void {
     this.todo.getTodo().subscribe({
-      next: (data) => this.toDoList = data,
+      next: (data) => {
+        data.forEach(element => {
+          element.dateChecked  = element.completed ? new Date().toISOString().slice(0, 10) : null;
+        });
+        this.toDoList = data
+      },
       error: (err) => console.error('Erreur API :', err)
     });
   }
 
   newToDo = '';
+  dateFilter = null;
+
+  search() : void {
+    if (this.dateFilter) {
+      this.filter = true;
+    } else {
+      this.filter = false
+    }
+  }
 
   onAddToDoClick() : void {
     this.maxId = (this.toDoList[this.toDoList.length-1].id) + 1;
@@ -71,5 +108,7 @@ export class App {
     this.toDoList.push({userId: 1, id: this.maxId, title: this.newToDo, completed: false})
 
   }
+
+
   
 }
