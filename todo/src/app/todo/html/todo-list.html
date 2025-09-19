@@ -1,0 +1,9 @@
+<div class="checkbox-wrapper">
+    <input
+        type="checkbox" 
+        id="{{ todo().id }}" 
+        name="{{ todo().title }}" 
+        [attr.checked]="todo().completed ? '' : null"
+    />
+    <label for="{{ todo().title }}">{{ todo().title }}</label>
+</div>

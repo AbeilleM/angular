@@ -1,68 +1,17 @@
-import { Component, signal } from '@angular/core';
-import { TodoService } from './todo-service';
+import { Component, inject, signal } from '@angular/core';
+import { TodoService } from './todo/todo-service';
+import { TodoList } from './todo/todo-list.component';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   imports: [
-    FormsModule
+    FormsModule,
+    TodoList
   ],
-  // templateUrl: './app.html',
-  template: `
-    <ul>
-    @for (todo of listExample; track todo.id) {
-      <li>{{ todo.task }}</li>
-    }
-    </ul>
-
-    <h1>To Do List</h1>
-
-    <input type="date"
-      [(ngModel)]="dateFilter"
-      [ngModelOptions]="{standalone: true}"
-    />
-    <button (click)="search()">Rechercher</button>
-
-    <div>
-    <form>
-    <input 
-      type="text"
-      [(ngModel)]="newToDo"
-      [ngModelOptions]="{standalone: true}"
-      />
-    </form>
-    <button (click)="onAddToDoClick()">Ajouter</button>
-    </div>
-
-    @for (todo of toDoList; track todo.id) {
-      @if (filter) {
-       @if (todo.dateChecked == dateFilter) {
-      <div class="checkbox-wrapper">
-        <input 
-        type="checkbox" 
-        id="{{ todo.id }}" 
-        name="{{ todo.title }}" 
-        [attr.checked]="todo.completed ? '' : null"
-        />
-        <label for="{{ todo.title }}">{{ todo.title }}</label>
-      </div>
-      }
-      
-    } @else {
-      <div class="checkbox-wrapper">
-        <input 
-        type="checkbox" 
-        id="{{ todo.id }}" 
-        name="{{ todo.title }}" 
-        [attr.checked]="todo.completed ? '' : null"
-        />
-        <label for="{{ todo.title }}">{{ todo.title }}</label>
-      </div>
-    }
-    
-    }
-    
-  `,    
+  templateUrl: './app.html',
+  
   styleUrl: './app.css'
 })
 export class App {
@@ -73,23 +22,32 @@ export class App {
     {id: 3, task : 'On check, mettre à jour la table'}
   ];
 
-  toDoList: any[] = [];
-  maxId: any;
+  todoService = inject(TodoService);
+  subscription!: Subscription;
+
+  toDoList = this.todoService.todos;
   filter = false;
+  // todo: any;
 
-  constructor(private todo: TodoService) {}
+  constructor(readonly todo: TodoService) {}
 
-  ngOnInit(): void {
-    this.todo.getTodo().subscribe({
-      next: (data) => {
-        data.forEach(element => {
-          element.dateChecked  = element.completed ? new Date().toISOString().slice(0, 10) : null;
-        });
-        this.toDoList = data
-      },
-      error: (err) => console.error('Erreur API :', err)
-    });
+  // ngOnInit(): void {
+  //   this.todo.getTodo().subscribe({
+  //     next: (data) => {
+  //       data.forEach(element => {
+  //         element.dateCompleted  = element.completed ? new Date().toISOString().slice(0, 10) : null;
+  //       });
+  //       this.toDoList = data
+  //     },
+  //     error: (err) => console.error('Erreur API :', err)
+  //   });
+  // }
+
+  ngOnInit() {
+    this.subscription = this.todoService.getTodo().subscribe();
   }
+
+  
 
   newToDo = '';
   dateFilter = null;
@@ -103,12 +61,19 @@ export class App {
   }
 
   onAddToDoClick() : void {
-    this.maxId = (this.toDoList[this.toDoList.length-1].id) + 1;
+    // this.maxId = (this.toDoList[this.toDoList.length-1].id) + 1;
 
-    this.toDoList.push({userId: 1, id: this.maxId, title: this.newToDo, completed: false})
+    // this.toDoList.push({userId: 1, id: this.maxId, title: this.newToDo, completed: false});
+
+    this.todo.createTodo({userId: 1, title: this.newToDo, completed: false, dateCreation: new Date().toISOString().slice(0, 10), dateCompleted: null })
+
+    console.log(this.toDoList());
 
   }
 
-
+  getByIdTodo(id: number) : void {
+    const test = this.todo.getTodoById(id);
+    console.log(test);
+  }
   
 }
