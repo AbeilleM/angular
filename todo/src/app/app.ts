@@ -27,8 +27,8 @@ export class App {
   listExample = [
     {id: 0, task : 'Mettre à jour le CSS'}, 
     {id: 1, task : 'Faire une vraie interface TODO'},
-    {id: 2, task : 'Boutons des dates à faire'},
-    {id: 3, task : 'Update la fenêtre d\'ajout'},
+    {id: 2, task : 'Version calendrier'},
+    {id: 3, task : 'Vérification lors de l\'ajout'},
   ];
 
   todoService = inject(TodoService);

@@ -1,14 +1,18 @@
 <div class="date-picker">
-    <button>J-3</button>
-    <button>J-2</button>
-    <button>J-1</button>
+    <button (click)="changeDate(dateThreeDaysAgo)">{{ dateThreeDaysAgo }}</button>
+    <button (click)="changeDate(dateTwoDaysAgo)">{{ dateTwoDaysAgo }}</button>
+    <button (click)="changeDate(dateOneDayAgo)">{{ dateOneDayAgo }}</button>
     <input type='date'
-    [(ngModel)]="selectedDate" 
-  (ngModelChange)="onDateChange($event)"/>
-    <button>J+1</button>
-    <button>J+2</button>
-    <button>J+3</button>
+      [(ngModel)]="selectedDate" 
+      (ngModelChange)="onDateChange($event)"/>
+    <button (click)="changeDate(dateOneDayAfter)">{{ dateOneDayAfter }}</button>
+    <button (click)="changeDate(dateTwoDayAfter)">{{ dateTwoDayAfter }}</button>
+    <button (click)="changeDate(dateThreeDayAfter)">{{ dateThreeDayAfter }}</button>
 
-    <input type="checkbox" 
-    [(ngModel)]="onChecked"/>
+    <div class="checkbox-filtre">
+      <label>Complétées : </label>
+      <input type="checkbox" 
+        [(ngModel)]="onChecked"
+        (ngModelChange)="onCheckedChange($event)"/>
+    </div>
 </div>
