@@ -1,6 +1,7 @@
 import { Component, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TodoService } from './todo.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-todo-add',
@@ -9,11 +10,13 @@ import { TodoService } from './todo.service';
       FormsModule
 ],
   templateUrl: './html/todo-add.html',
-  styleUrl: '../app.css',
+  styleUrl: './html/addWindow.css',
 
 })
 export class TodoAdd {
-    constructor(private todoService: TodoService) {}
+    constructor(private todoService: TodoService,
+    private dialogRef: MatDialogRef<TodoAdd>
+    ) {}
     
     newToDo: string = '';
     newDateCreation: string = '';
@@ -31,5 +34,9 @@ export class TodoAdd {
 
     this.todoService.createTodo(todoAdded);
 
+  }
+
+  closeAddWindow(): void {
+    this.dialogRef.close();
   }
 }

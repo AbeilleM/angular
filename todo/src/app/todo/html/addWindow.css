@@ -1,0 +1,62 @@
+* {
+ font-family: sans-serif;
+    margin: 5px;
+}
+
+.header {
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #2a415a;
+    color: white;
+}
+
+.close {
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    color: white;
+}
+
+.add {
+  position: relative;
+  float: right;
+  margin-top: 20px;
+  padding: 10px 15px;
+  background-color: #2a415a;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-left: auto;
+  margin-right: 10px;
+}
+.add:hover {
+  background-color: #1b2a3d;
+}
+
+.date-picker {
+    display: flex;
+    align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.date-picker input[type="date"] {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  width: 165px;
+}
+
+.date-picker input[type ="text"] {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  width: 300px;
+  margin-bottom: 10px;
+}

@@ -28,6 +28,7 @@ export class App {
     {id: 0, task : 'Mettre à jour le CSS'}, 
     {id: 1, task : 'Faire une vraie interface TODO'},
     {id: 2, task : 'Boutons des dates à faire'},
+    {id: 3, task : 'Update la fenêtre d\'ajout'},
   ];
 
   todoService = inject(TodoService);
@@ -71,6 +72,10 @@ export class App {
 
   openAddWindow() {
     this.todoAdd.openAddWindow();
+  }
+
+  closeAddWindow() {
+    this.todoAdd.closeAddWindow();
   }
   
 

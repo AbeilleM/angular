@@ -16,4 +16,8 @@ export class TodoAddService {
   openAddWindow() {
     this.dialog.open(TodoAdd);
   }
+
+  closeAddWindow() {
+    this.dialog.closeAll();
+  }
 }
