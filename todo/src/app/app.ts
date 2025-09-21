@@ -26,9 +26,8 @@ import { Todo } from './todo/todo';
 export class App {
   listExample = [
     {id: 0, task : 'Mettre à jour le CSS'}, 
-    {id: 1, task : 'Faire une vraie interface TODO'}, 
-    {id: 2, task : 'Suppression d\'une tâche'},
-    {id: 3, task : 'On check, mettre à jour la table'}
+    {id: 1, task : 'Faire une vraie interface TODO'},
+    {id: 2, task : 'Boutons des dates à faire'},
   ];
 
   todoService = inject(TodoService);
@@ -50,16 +49,18 @@ export class App {
           element.dateCreation  = new Date().toISOString().slice(0, 10); 
         });
         this.toDoList = data
-        console.log(this.toDoList);
       },
       error: (err) => console.error('Erreur API :', err)
     });
   }
 
   filteredTodos: Todo[] = [];
+  dateFilter : string = '';
+  checked: boolean = false;
 
-  onDateFilter(date: string) {
-    this.todoService.getByDateCreation(date).subscribe(data => {
+  onDateFilter(date: string, isChecked: boolean) {
+    this.dateFilter = date;
+    this.todoService.getByDateCreation(date, isChecked).subscribe(data => {
       this.filteredTodos = data;
     });
   }
@@ -74,7 +75,6 @@ export class App {
   
 
   newToDo = '';
-  dateFilter = null;
 
   getByIdTodo(id: number) : void {
     const test = this.todo.getTodoById(id);

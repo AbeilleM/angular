@@ -5,11 +5,15 @@
     </ul>
 
     <h1>To Do List</h1>
-    <button (click)="openAddWindow()">Ajouter</button>
+    <button (click)="openAddWindow()"
+    class="add">Ajouter</button>
 
-    <app-date-picker (dateChange)="onDateFilter($event)"/>
+    <br>
+    <br>
 
-    @if (filteredTodos.length > 0) {
+    <app-date-picker (dateChange)="onDateFilter($event.date, $event.isChecked)"/>
+
+    @if (dateFilter) {
       @for (todoData of filteredTodos; track todoData.id) {
         <app-todo-list [todo]="todoData" />
       }

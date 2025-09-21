@@ -15,13 +15,17 @@ import { Todo } from "../todo/todo";
 export class DatePicker {
     constructor() {}
 
-    @Output() dateChange = new EventEmitter<string>();
+    @Output() dateChange = new EventEmitter<{date: string, isChecked: boolean}>();
 
     selectedDate: string = new Date().toISOString().slice(0, 10);
+    onChecked: boolean = false;
 
     onDateChange(event: string) {
       this.selectedDate = event;
-      this.dateChange.emit(event);
+      this.dateChange.emit({
+        date: event,
+        isChecked: this.onChecked
+      });
 
     }
 

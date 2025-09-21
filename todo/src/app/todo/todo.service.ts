@@ -31,12 +31,12 @@ export class TodoService {
     return this.http.get<Todo>(`${this.url}/${id}`);
   }
 
-  getByDateCreation(dateCreation: string): Observable<Todo[]> {
+  getByDateCreation(dateCreation: string, checked : boolean): Observable<Todo[]> {
     // dans le cas où on utilise l'API 
     // return this.http.get<Todo[]>(`${this.url}?dateCreation=${dateCreation}`);
 
     return this.todosObservable$.pipe(
-      map((todos: Todo[]) => todos.filter(todo => todo.dateCreation === dateCreation))
+      map((todos: Todo[]) => checked ? todos.filter(todo => todo.dateCreation === dateCreation && todo.completed) : todos.filter(todo => todo.dateCreation === dateCreation))
     );
   }
 
@@ -50,7 +50,22 @@ export class TodoService {
   }
 
   deleteTodo(id: number): Observable<void> {
+    this.todos.update(todos => todos.filter(todo => todo.id !== id));
     return this.http.delete<void>(`${this.url}/${id}`);
+  }
+
+  updateTodo(id: number, updatedTodo: Partial<Todo>): Observable<Todo> {
+    this.todos.update(todos => 
+      todos.map(todo => todo.id === id ? { ...todo, ...updatedTodo } : todo)
+    );
+    
+    return this.http.patch<Todo>(`${this.url}/${updatedTodo.id}`, updatedTodo).pipe(
+      tap((todo: Todo) => {
+        this.todos.update(todos => 
+          todos.map(t => t.id === todo.id ? todo : t)
+        );
+      })
+    );
   }
   
 }
