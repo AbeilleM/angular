@@ -1,0 +1,14 @@
+<div>
+    <h2>Ajout d'une tâche</h2>
+    <input 
+      type="text"
+      [(ngModel)]="newToDo"
+      [ngModelOptions]="{standalone: true}"
+      placeholder="Nouvelle tâche"
+    />
+    <input type='date'
+      [(ngModel)]="newDateCreation"
+      [ngModelOptions]="{standalone: true}"
+    />
+    <button (click)="onAddToDoClick()">Ajouter</button>
+</div>

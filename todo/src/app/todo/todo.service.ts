@@ -1,15 +1,19 @@
 import { inject, Injectable, signal, Signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { Todo } from './todo';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class TodoService {
   todos = signal<Todo[]>([]);
   url: string = 'https://jsonplaceholder.typicode.com/todos';
   http = inject(HttpClient);
+
+  todosObservable$ = toObservable(this.todos);
 
   constructor() {}
 
@@ -19,12 +23,29 @@ export class TodoService {
     );
   }
 
+  get todos$() {
+    return this.todos.asReadonly();
+  }
+
   getTodoById(id: number): Observable<Todo> {
     return this.http.get<Todo>(`${this.url}/${id}`);
   }
 
+  getByDateCreation(dateCreation: string): Observable<Todo[]> {
+    // dans le cas où on utilise l'API 
+    // return this.http.get<Todo[]>(`${this.url}?dateCreation=${dateCreation}`);
+
+    return this.todosObservable$.pipe(
+      map((todos: Todo[]) => todos.filter(todo => todo.dateCreation === dateCreation))
+    );
+  }
+
   
   createTodo(todo: Omit<Todo, 'id'>): Observable<Todo> {
+    const sortedTodos = [...this.todos()].sort((a, b) => b.id - a.id);
+    const newTodo: Todo = { ...todo, id: sortedTodos[0]?.id + 1 || 1 }; // Si la liste est vide, commencer à 1
+    this.todos.update(todos => [...todos, newTodo]);
+
     return this.http.post<Todo>(this.url, todo);
   }
 

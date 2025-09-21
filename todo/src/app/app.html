@@ -5,32 +5,18 @@
     </ul>
 
     <h1>To Do List</h1>
+    <button (click)="openAddWindow()">Ajouter</button>
 
-    <input type="date"
-      [(ngModel)]="dateFilter"
-      [ngModelOptions]="{standalone: true}"
-    />
-    <button (click)="search()">Rechercher</button>
+    <app-date-picker (dateChange)="onDateFilter($event)"/>
 
-    <div>
-    <form>
-    <input 
-      type="text"
-      [(ngModel)]="newToDo"
-      [ngModelOptions]="{standalone: true}"
-      />
-    </form>
-    <button (click)="onAddToDoClick()">Ajouter</button>
-    </div>
-
-    @for (todoData of toDoList(); track todoData.id) {
-      @if (filter) {
-       @if (todoData.dateCompleted == dateFilter) {
+    @if (filteredTodos.length > 0) {
+      @for (todoData of filteredTodos; track todoData.id) {
         <app-todo-list [todo]="todoData" />
       }
-      
     } @else {
-        <app-todo-list [todo]="todoData" />
-    }
+
+      @for (todoData of toDoList; track todoData.id) {
+          <app-todo-list [todo]="todoData" />
+      }
     
     }
