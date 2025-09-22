@@ -36,7 +36,7 @@ export class TodoService {
     // return this.http.get<Todo[]>(`${this.url}?dateCreation=${dateCreation}`);
 
     return this.todosObservable$.pipe(
-      map((todos: Todo[]) => checked ? todos.filter(todo => todo.dateCreation === dateCreation && todo.completed) : todos.filter(todo => todo.dateCreation === dateCreation))
+      map((todos: Todo[]) => checked ? todos.filter(todo => todo.dateCreation === dateCreation && todo.completed === false) : todos.filter(todo => todo.dateCreation === dateCreation))
     );
   }
 

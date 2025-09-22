@@ -10,9 +10,9 @@
     <button (click)="changeDate(dateThreeDayAfter)">{{ dateThreeDayAfter }}</button>
 
     <div class="checkbox-filtre">
-      <label>Complétées : </label>
-      <input type="checkbox" 
+      <label>
+        <input type="checkbox" 
         [(ngModel)]="onChecked"
-        (ngModelChange)="onCheckedChange($event)"/>
+        (ngModelChange)="onCheckedChange($event)"/>Non complétées</label>
     </div>
 </div>
