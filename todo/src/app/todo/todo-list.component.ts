@@ -20,6 +20,6 @@ export class TodoList {
   }
 
   updateTodo(id: number, completed: boolean) : void {
-    this.todoList.updateTodo(id, { completed: !completed });
+    this.todoList.updateTodo({id: id, completed: !completed });
   }
 }

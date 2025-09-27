@@ -1,11 +1,13 @@
 <div class="checkbox-wrapper">
-    <input
-        type="checkbox" 
-        id="{{ todo().id }}" 
-        name="{{ todo().title }}" 
-        [attr.checked]="todo().completed ? '' : null"
-        (change)="updateTodo(todo().id, todo().completed)"
-    />
-    <label for="{{ todo().title }}">{{ todo().title }}</label>
+    <label for="todo().title">
+        <input
+            type="checkbox" 
+            id="todo().id" 
+            name="todo().title" 
+            [attr.checked]="todo().completed ? '' : null"
+            (change)="updateTodo(todo().id, todo().completed)"
+        />
+        {{ todo().title }}
+    </label>
     <button class="delete" (click)="getByIdTodo(todo().id)">X</button>
 </div>

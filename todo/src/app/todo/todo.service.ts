@@ -42,8 +42,9 @@ export class TodoService {
 
   
   createTodo(todo: Omit<Todo, 'id'>): Observable<Todo> {
-    const sortedTodos = [...this.todos()].sort((a, b) => b.id - a.id);
-    const newTodo: Todo = { ...todo, id: sortedTodos[0]?.id + 1 || 1 }; // Si la liste est vide, commencer à 1
+    const sortedTodos = this.todos().map((a) => a.id);
+    console.log(sortedTodos);
+    const newTodo: Todo = { ...todo, id: Math.max(...sortedTodos) +1 || 1 };
     this.todos.update(todos => [...todos, newTodo]);
 
     return this.http.post<Todo>(this.url, todo);
@@ -54,11 +55,11 @@ export class TodoService {
     return this.http.delete<void>(`${this.url}/${id}`);
   }
 
-  updateTodo(id: number, updatedTodo: Partial<Todo>): Observable<Todo> {
+  updateTodo(updatedTodo: Pick<Todo, "id" | "completed">): Observable<Todo> {
     this.todos.update(todos => 
-      todos.map(todo => todo.id === id ? { ...todo, ...updatedTodo } : todo)
+      todos.map(todo => todo.id === updatedTodo.id ? { ...todo, ...updatedTodo } : todo)
     );
-    
+
     return this.http.patch<Todo>(`${this.url}/${updatedTodo.id}`, updatedTodo).pipe(
       tap((todo: Todo) => {
         this.todos.update(todos => 
